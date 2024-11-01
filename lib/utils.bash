@@ -59,7 +59,10 @@ install_version() {
 
 	(
 		mkdir -p "$install_path"
-		cp -r "$ASDF_DOWNLOAD_PATH"/* "$install_path"
+		# temporary fix, pin to older rust version
+		rustup override set 1.79.0
+		cargo build --manifest-path "$ASDF_DOWNLOAD_PATH"/Cargo.toml -p anchor-cli --release
+		cp -r "$ASDF_DOWNLOAD_PATH"/target/release/anchor "$install_path"/anchor
 
 		# TODO: Assert anchor executable exists.
 		local tool_cmd
